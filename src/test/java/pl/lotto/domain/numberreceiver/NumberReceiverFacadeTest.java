@@ -223,4 +223,18 @@ public class NumberReceiverFacadeTest {
         // then
         assertThat(allTicketsByDate).isEmpty();
     }
+
+    @Test
+    //given
+    Clock clock = Clock.fixed(2024, 12, 14, 10, 0, 0).toInstant(ZoneOffset.UTC), ZoneId.of("Europe/London");
+    HashGenerable hashGenerator = new HashGenerator();
+    NumberReceiverFacade numberReceiverFacade = new NumberReceiverConfiguration().createForTest(hashGenerator, clock, ticketRepository);
+
+    //when
+    LocalDateTime testedDrawDate = numberReceiverFacade.retrieveNextDrawDate();
+
+    //then
+    LocalDateTime expectedDrawDate = LocalDateTime.of(2024, 12, 14, 12, 0, 0);
+    assertThat(testedDrawDate).isEqualTo(expectedDrawDate);
+
 }
